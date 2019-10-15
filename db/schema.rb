@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20190828170345) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "badges", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at"
