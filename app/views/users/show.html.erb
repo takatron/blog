@@ -1,0 +1,9 @@
+<h2><%= @single_user.firstname %> <%= @single_user.lastname %>'s Profile Page</h2>
+<p><strong>Name:</strong> <%= @single_user.firstname %> <%= @single_user.lastname %></p>
+<p><strong>Email:</strong> <%= @single_user.email %></p>
+<p><strong>Flare:</strong> <%= @single_user.flare %></p>
+
+<h4>Badges</h4>
+<% @badges.each do |badge| %>
+<p><%= badge.name %></p>
+<% end %>

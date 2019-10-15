@@ -1,0 +1,16 @@
+<!-- <form action="/posts" method="post">
+  <input type="hidden" name="id" id="id" value="<%= @post.id %>" />
+  <label for="name">Title:</label>
+  <br />
+  <input type="text" name="title" id="title" value="<%= @post.title %>" />
+  <br />
+  <br />
+  <label for="content">Content:</label>
+  <br />
+  <textarea name="content" id="content" rows="4" cols="50" ><%= @post.content %></textarea>
+  <br />
+  <br />
+  <input type="submit" />
+</form> -->
+
+<%= render 'form', post: @post %>

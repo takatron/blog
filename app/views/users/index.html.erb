@@ -1,0 +1,23 @@
+<%= form_for @user do |f| %>
+  <%= f.label "Page Size:" %>
+  <%= f.select :page_size, options_for_select([ 3, 5, 10 ], 3), onchange: "this.form.submit();" %>
+  <br />
+  <%= f.submit "Submit" %>
+<% end %>
+</br>
+<% (1..@total_pages).each do |page_num| %>
+  <span><%= link_to(page_num, users_path(page: page_num)) %>,&nbsp;</span>
+<% end %>
+<br />
+<br />
+
+<% @user.each do |user| %>
+  <h2><%= user.firstname %> <%= user.lastname %></h2>
+  <% user.badges.each do |badge| %>
+    <span><%= badge.name %>, </span>
+  <% end %>
+  </p>
+  <p><%= user.email %></p>
+  <p><%= user.flare %></p>
+  <br />
+<% end %>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Blog</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<div id="navBar">
+  <% if logged_in? %>
+    <%= link_to 'Log out', log_out_path, method: 'post' %>
+  <% else %>
+    <%= link_to 'Login', login_path %>
+  <% end %>
+</div>
+<hr />
+<%= yield %>
+
+</body>
+</html>

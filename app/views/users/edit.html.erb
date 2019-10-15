@@ -1,0 +1,28 @@
+<h2>Edit a New User</h2>
+<!-- <form action="/save_user" method="post">
+  <input type="hidden" name="id" id="id" value="<%= @user.id %>" />
+  <label for="firstname">Firstname:</label>
+  <br />
+  <input type="text" id="firstname" name="firstname" value="<%= @user.firstname %>">
+  <br />
+  <br />
+  <label for="lastname">Lastname:</label>
+  <br />
+  <br />
+  <input type="text" id="lastname" name="lastname" value="<%= @user.lastname %>">
+  <br />
+  <label for="email">Email:</label>
+  <br />
+  <br />
+  <input type="text" id="email" name="email" value="<%= @user.email %>">
+  <br />
+  <br />
+  <label for="flare">Flare:</label>
+  <br />
+  <input type="text" id="flare" name="flare" value="<%= @user.flare %>">
+  <br />
+  <br />
+  <input type="submit" />
+</form> -->
+
+<%= render 'form', user: @user %>
