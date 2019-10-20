@@ -32,7 +32,7 @@ class PostsController < ApplicationController
 
     if @post.save
       # redirect_to '/posts'
-      redirect_to posts_path
+      redirect_to posts_path(page: 1)
     else
       render :new
     end

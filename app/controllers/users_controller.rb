@@ -26,7 +26,7 @@ class UsersController < ApplicationController
 
     if @user.save
       # redirect_to '/users'
-      redirect_to users_path
+      redirect_to users_path(page: 1)
     else
       render :new
     end
