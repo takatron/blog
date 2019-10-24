@@ -4,6 +4,12 @@ development:
   database: blog_development
   pool: 5
 
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: blog_development
+  pool: 5
+
 default: &default
   adapter: postgresql
   encoding: unicode
