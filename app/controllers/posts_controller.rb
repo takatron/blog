@@ -29,6 +29,7 @@ class PostsController < ApplicationController
     # attr = params.require(:post).permit!
     attr = params.require(:post).permit(:title, :content, category_ids:[])
     @post = Post.new(attr)
+    # calc slug
 
     if @post.save
       # redirect_to '/posts'
