@@ -13,7 +13,7 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = Post.find(params[:id])
+    @post = Post.find_by(id: params[:id]) || Post.find_by(slug: params[:id])
     @comments = @post.comments.includes(:votes)
     @comment = @post.comments.build
   end
@@ -29,7 +29,6 @@ class PostsController < ApplicationController
     # attr = params.require(:post).permit!
     attr = params.require(:post).permit(:title, :content, category_ids:[])
     @post = Post.new(attr)
-    # calc slug
 
     if @post.save
       # redirect_to '/posts'

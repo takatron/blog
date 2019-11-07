@@ -7,10 +7,13 @@ class Post < ActiveRecord::Base
   has_many :categories, through: :posts_categories
   has_many :votes, as: :voteable
 
+  before_create :calculate_slug
+
   REJECTED_CHARS = /([.@?$%&^*!])/
   REPLACED_CHARS = /([ :\-])/
+
   def calculate_slug
-    title
+    self.slug = title
       .downcase
       .strip
       .gsub(REPLACED_CHARS, '_')
