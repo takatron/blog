@@ -14,8 +14,12 @@ class PostsController < ApplicationController
 
   def show
     @post = Post.find_by(id: params[:id]) || Post.find_by(slug: params[:id])
-    @comments = @post.comments.includes(:votes)
-    @comment = @post.comments.build
+    if @post
+      @comments = @post.comments.includes(:votes)
+      @comment = @post.comments.build
+    else
+      render '/shared/not_found', status: 404
+    end
   end
 
   def new
