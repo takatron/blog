@@ -73,4 +73,40 @@ describe PostsController do
       end
     end
   end
+
+  describe '#index' do
+    context 'when there are no posts' do
+      it 'returns an empty collection' do
+        get :index
+        expect(assigns(:post)).to eq([])
+      end
+    end
+
+    context 'when there are less posts than the per_page' do
+      let(:post_1) { create(:post, created_at: 1.day.ago) }
+      let(:post_2) { create(:post) }
+      it 'returns all available posts' do
+        get :index
+        expect(assigns(:post)).to eq([post_2, post_1])
+      end
+    end
+
+    context 'when there is an amount equal to the per_page' do
+      let!(:post_1) { create(:post, created_at: 4.days.ago) }
+      let!(:post_2) { create(:post, created_at: 3.days.ago) }
+      let!(:post_3) { create(:post, created_at: 2.days.ago) }
+      let!(:post_4) { create(:post, created_at: 1.day.ago) }
+      let!(:post_5) { create(:post) }
+      it 'returns all the records in the collection' do
+        get :index
+        expect(assigns(:post)).to eq([
+          post_5,
+          post_4,
+          post_3,
+          post_2,
+          post_1
+        ])
+      end
+    end
+  end
 end

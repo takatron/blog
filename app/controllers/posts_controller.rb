@@ -4,6 +4,7 @@ class PostsController < ApplicationController
 
   def index
     # @post = Post.all.includes(:categories)
+    require 'pry'; binding.pry
     @post = Post.order(created_at: :desc)
                 .offset(per_page * (page - 1))
                 .limit(per_page)
@@ -58,11 +59,13 @@ class PostsController < ApplicationController
   private
 
   def per_page
-    3
+    5
   end
 
+  FIRST_PAGE = 1
   def page
-    params[:page].to_i || 1
+    return FIRST_PAGE if params[:page].nil?
+    params[:page].to_i
   end
 
   def ensure_logged_in
