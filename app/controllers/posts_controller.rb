@@ -4,7 +4,6 @@ class PostsController < ApplicationController
 
   def index
     # @post = Post.all.includes(:categories)
-    require 'pry'; binding.pry
     @post = Post.order(created_at: :desc)
                 .offset(per_page * (page - 1))
                 .limit(per_page)
@@ -50,22 +49,27 @@ class PostsController < ApplicationController
   def update
     post = Post.find(params[:id])
     attr = params.require(:post).permit(:title, :content, category_ids:[])
-    post.update(attr)
 
-    # redirect_to "/posts/#{params[:id]}"
-    redirect_to post_path(post)
+    if post.update(attr)
+      # redirect_to "/posts/#{params[:id]}"
+      redirect_to post_path(post)
+    else
+      redirect_to edit_post_path(id: post.id)
+    end
   end
 
   private
 
+  DEFAULT_PER_PAGE = 5
   def per_page
-    5
+    return params[:per_page].to_i if params[:per_page].to_i > 0
+    DEFAULT_PER_PAGE
   end
 
   FIRST_PAGE = 1
   def page
-    return FIRST_PAGE if params[:page].nil?
-    params[:page].to_i
+    return params[:page].to_i if params[:page].to_i > 0
+    FIRST_PAGE
   end
 
   def ensure_logged_in

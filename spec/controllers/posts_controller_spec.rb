@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe PostsController do
   describe '#show' do
-    let(:post) { create(:post) }
+    let!(:post) { create(:post) }
 
     context 'when post is found using id' do
       it 'renders the show page' do
@@ -32,8 +32,8 @@ describe PostsController do
 
   describe '#create' do
     context 'when the post is successfully created' do
-      let(:user) { create(:user) }
-      let(:valid_params) do
+      let!(:user) { create(:user) }
+      let!(:valid_params) do
         {
           post: { title: 'my title', content: 'my content' }
         }
@@ -53,8 +53,8 @@ describe PostsController do
     end
 
     context 'when the post fails creation' do
-      let(:user) { create(:user) }
-      let(:invalid_params) do
+      let!(:user) { create(:user) }
+      let!(:invalid_params) do
         {
           post: { title: '', content: '' }
         }
@@ -79,15 +79,17 @@ describe PostsController do
       it 'returns an empty collection' do
         get :index
         expect(assigns(:post)).to eq([])
+        expect(assigns(:total_pages)).to eq(0)
       end
     end
 
     context 'when there are less posts than the per_page' do
-      let(:post_1) { create(:post, created_at: 1.day.ago) }
-      let(:post_2) { create(:post) }
+      let!(:post_1) { create(:post, created_at: 1.day.ago) }
+      let!(:post_2) { create(:post) }
       it 'returns all available posts' do
         get :index
         expect(assigns(:post)).to eq([post_2, post_1])
+        expect(assigns(:total_pages)).to eq(1)
       end
     end
 
@@ -106,7 +108,80 @@ describe PostsController do
           post_2,
           post_1
         ])
+        expect(assigns(:total_pages)).to eq(1)
       end
     end
+
+    context 'when it is 2nd page' do
+      let!(:post_1) { create(:post, created_at: 9.day.ago) }
+      let!(:post_2) { create(:post, created_at: 8.day.ago) }
+      let!(:post_3) { create(:post, created_at: 7.day.ago) }
+      let!(:post_4) { create(:post, created_at: 6.day.ago) }
+      let!(:post_5) { create(:post, created_at: 5.day.ago) }
+      let!(:post_6) { create(:post, created_at: 4.day.ago) }
+      let!(:post_7) { create(:post, created_at: 3.day.ago) }
+      let!(:post_8) { create(:post, created_at: 2.day.ago) }
+      let!(:post_9) { create(:post, created_at: 1.day.ago) }
+      let!(:post_10) { create(:post) }
+      it 'returns the posts 5 posts from the 5 oldest to 10th oldest' do
+        get :index, { :page => '2' }
+        expect(assigns(:post)).to eq([
+          post_5,
+          post_4,
+          post_3,
+          post_2,
+          post_1
+        ])
+        expect(assigns(:total_pages)).to eq(2)
+      end
+    end
+
+    context 'when page param is negative' do
+      let!(:post_1) { create(:post) }
+      it 'returns the default first page' do
+        get :index, { :page => '-2' }
+        expect(assigns(:post)).to eq([post_1])
+        expect(assigns(:total_pages)).to eq(1)
+      end
+    end
+
+    context 'when per_page param is different from default 5' do
+      let!(:post_1) { create(:post, created_at: 4.days.ago) }
+      let!(:post_2) { create(:post, created_at: 3.days.ago) }
+      let!(:post_3) { create(:post, created_at: 2.days.ago) }
+      let!(:post_4) { create(:post, created_at: 1.day.ago) }
+      let!(:post_5) { create(:post) }
+      it 'returned posts count matches the per_page number' do
+        get :index, { :per_page => '3' }
+        expect(assigns(:post)).to eq([post_5, post_4, post_3])
+        expect(assigns(:total_pages)).to eq(2)
+      end
+    end
+  end
+
+  describe '#update' do
+    let!(:post) { create(:post) }
+    let!(:user) { create(:user) }
+    let!(:valid_params) do
+      {
+        post: { title: 'updated title', content: 'updated content' }
+      }
+    end
+
+    context 'when post is successfully updated' do
+      it 'renders the show page for the updated post' do
+        put :update, valid_params, { user_id: user.id }
+
+        expect(response).to render_template(:show)
+      end
+    end
+
+    # context 'when post fails to updated' do
+    #   it 'renders the edit page for that post' do
+    #     post :update, id: post.id
+    #
+    #     expect(response).to render_template(:show)
+    #   end
+    # end
   end
 end
