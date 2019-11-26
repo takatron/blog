@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'json_expressions/minitest'
 
 describe PostsController do
   describe '#show' do
@@ -75,6 +76,45 @@ describe PostsController do
   end
 
   describe '#index' do
+    context 'when request is Json' do
+      let(:payload) do
+        [
+          {
+            id: 1,
+            title: 'my title',
+            content: 'my content',
+            categories: ['blogs'],
+            vote_count: 1,
+            author: {
+              id: 7,
+              firstname: 'john',
+              lastname: 'doe'
+            }
+          }
+        ]
+      end
+
+      let!(:author) { create(:user, firstname: 'john', lastname: 'doe', id: 7) }
+      let!(:category) { create(:category, name: 'blogs') }
+      let!(:posts_categories) { create(
+        :posts_category,
+        post_id: post.id,
+        category_id: category.id
+      ) }
+      let!(:post) { create(
+        :post,
+        title: 'my title',
+        content: 'my content',
+        user_id: author.id
+      ) }
+
+
+      it ('gives me back Json') do
+        get :index, format: :json
+        expect(response.body).to match_json_expression(payload)
+      end
+    end
+
     context 'when there are no posts' do
       it 'returns an empty collection' do
         get :index
