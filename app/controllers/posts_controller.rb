@@ -3,13 +3,21 @@ class PostsController < ApplicationController
   before_action :ensure_logged_in, only:[:new, :create, :edit, :update]
 
   def index
-    # @post = Post.all.includes(:categories)
-    @post = Post.order(created_at: :desc)
-                .offset(per_page * (page - 1))
-                .limit(per_page)
-                .includes(:categories, :votes)
+    respond_to do |format|
+      format.html do
+        # @post = Post.all.includes(:categories)
+        @post = Post.order(created_at: :desc)
+                    .offset(per_page * (page - 1))
+                    .limit(per_page)
+                    .includes(:categories, :votes)
 
-    @total_pages = (Post.count / per_page.to_f).ceil
+        @total_pages = (Post.count / per_page.to_f).ceil
+      end
+
+      format.json do
+        render json: [{ message: 'got you some json'}]
+      end
+    end
   end
 
   def show
