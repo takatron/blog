@@ -7,6 +7,8 @@ class Post < ActiveRecord::Base
   has_many :categories, through: :posts_categories
   has_many :votes, as: :voteable
 
+  belongs_to :user
+
   before_create :calculate_slug
 
   REJECTED_CHARS = /([.@?$%&^*!])/
