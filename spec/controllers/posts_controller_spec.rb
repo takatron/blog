@@ -109,9 +109,14 @@ describe PostsController do
       ) }
 
 
-      it ('gives me back Json') do
+      it ('gives me back Json for all posts') do
         get :index, format: :json
         expect(response.body).to match_json_expression(payload)
+      end
+
+      it ('gives me back Json for one post') do
+        get :show, format: :json, id: 1
+        expect(response.body).to match_json_expression(payload[0])
       end
     end
 
