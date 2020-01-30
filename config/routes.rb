@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   post '/logout', to: 'sessions#destroy', as: :log_out
   post '/api/posts', to: 'posts#create_from_api'
+  get '/gists', to: 'gists#index'
+  post '/gists', to: 'gists#search'
 
   root 'posts#index', page: 1
+
 end

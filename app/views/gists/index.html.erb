@@ -1,0 +1,14 @@
+<%= form_tag("/gists", method: "post") do %>
+  <%= label_tag(:username, "User: ") %>
+  <%= text_field_tag(:username) %>
+  <%= submit_tag("Search") %>
+<% end %>
+
+<% @gists.each do |g| %>
+  <p>id: <%= g['id'] %></p>
+
+  <p>url: <%= g['url'] %></p>
+
+  <p>comments: <%= g['comments'] %></p>
+
+<% end %>
